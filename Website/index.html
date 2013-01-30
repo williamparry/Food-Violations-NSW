@@ -1,0 +1,246 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>NSW Food Penalty Notices</title>
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset-context/cssreset-context-min.css" />
+
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0;
+             
+             font-family: verdana }
+      #map_canvas { height: 100% }
+      
+      
+      
+      .store
+      {
+          
+      }
+      
+      .store h2
+      {
+          font-size: 20px;
+          margin-bottom: 10px;
+      }
+      
+      .store .address
+      {
+          font-size: 12px;
+          margin-bottom: 10px;
+      }
+      
+      .store h3
+      {
+          font-size: 18px;
+      }
+      
+      .store table
+      {
+          font-size: 12px;
+          margin-top: 10px;
+      }
+      
+      .store table th
+      {
+          width: 200px;
+          vertical-align: top;
+          background: #efefef;
+          padding: 5px;
+      }
+      
+      .store table td
+      {
+          vertical-align: top;
+          padding: 5px;
+      }
+      
+      #map_key
+      {
+          background-color: rgba(255,255,255,0.9);
+          border: 1px solid #fff;
+          position: absolute;
+          left: 0;
+          bottom: 0;
+      }
+      
+      #map_key dt, #map_key dd
+      {
+          float: left;
+          display: block;
+          font-size: 12px;
+      }
+      
+      #map_key dd
+      {
+          margin-left: 5px;
+          margin-right: 10px;
+          margin-top: 9px;
+          
+      }
+      
+      
+      
+      #map_key dl
+      {
+          overflow: hidden;
+          padding: 5px;
+          margin: 0;
+      }
+      
+      #map_key dl:after
+      {
+          clear:both;
+          content: ".";
+          display: none;
+      }
+      
+      #map_key div
+      {
+          font-size: 12px;
+          padding: 5px
+      }
+      
+      #map_key a
+      {
+          color: blue;
+          text-decoration: none;
+      }
+      
+    </style>
+
+
+</head>
+<body>
+
+	<div id="map_canvas"></div>
+
+    <div id="map_key">
+    <dl>
+        <dt><img src="img/1.png" alt="1" /></dt>
+        <dd>1 violation</dd>
+        <dt><img src="img/2.png" alt="2" /></dt>
+        <dd>2 violations</dd>
+        <dt><img src="img/3.png" alt="3" /></dt>
+        <dd>3+ violations</dd>
+    </dl>
+    <div>
+        Data from <a href="http://www.foodauthority.nsw.gov.au">http://www.foodauthority.nsw.gov.au</a>
+    </div>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD7XP20-WF1Wt0dthts-rKRravj4ffMk6U&sensor=true"></script>
+    
+    <script>
+
+        var map,
+            infoWindow = new google.maps.InfoWindow();
+
+        $(document).ready(function () {
+
+            var myOptions = {
+                zoom: 12,
+                center: new google.maps.LatLng(-33.869629, 151.206955),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var lat = position.coords.latitude,
+                    lng = position.coords.longitude;
+
+                var loc = new google.maps.LatLng(lat, lng);
+                map.setCenter(loc);
+            });
+
+            $.getJSON("data/data.json", function (data) {
+
+                $.each(data, function (key, store) {
+
+                    var contentString = [];
+
+                    contentString.push("<div class='store yui3-cssreset'>");
+                    contentString.push("<h2>" + store.TradeName + "</h2>");
+                    contentString.push("<div class='address'>" + store.Address + "</div>");
+                    contentString.push("<h3>Violations</h3>");
+                    contentString.push("<ul>");
+                    if (store.Offences.length > 1) {
+                        console.log("a");
+                    }
+
+                    $.each(store.Offences, function (key, offence) {
+                        contentString.push("<li>");
+                        contentString.push("<table cellspacing='5' cellpadding='10'>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Penalty Notice Number</th>");
+                        contentString.push("<td>" + offence.PenaltyNoticeNumber + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Date Alleged</th>");
+                        contentString.push("<td>" + offence.DateAlleged + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Date Penalty Notice Served</th>");
+                        contentString.push("<td>" + offence.DatePenaltyNoticeServed + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Offence Code</th>");
+                        contentString.push("<td>" + offence.OffenceCode + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Nature and Circumstances</th>");
+                        contentString.push("<td>" + offence.NatureCircumstances + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Penalty Amount</th>");
+                        contentString.push("<td>" + offence.PenaltyAmount + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Issued By</th>");
+                        contentString.push("<td>" + offence.IssuedBy + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Name of Party Served</th>");
+                        contentString.push("<td>" + offence.NamePartyServed + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("<tr>");
+                        contentString.push("<th>Notes</th>");
+                        contentString.push("<td>" + offence.Notes + "</td>");
+                        contentString.push("</tr>");
+                        contentString.push("</table>");
+                        contentString.push("</li>");
+                    });
+                    contentString.push("</ul>");
+                    contentString.push("</div>");
+
+                    var icon = store.Offences.length > 2 ? 3 : store.Offences.length > 1 ? 2 : 1;
+                    
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(store.Lat, store.Lng),
+                        map: map,
+                        icon: 'img/' + icon + '.png',
+                        title: store.TradeName
+                    });
+
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infoWindow.setContent(contentString.join(""));
+                        infoWindow.open(map, marker);
+                    });
+
+
+                });
+
+            });
+
+
+        });
+
+    </script>
+
+</body>
+</html>

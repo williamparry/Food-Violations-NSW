@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scraper", "Scraper\Scraper.csproj", "{43C23B96-465C-44E0-801E-3884C6EAF7EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "Website\Website.csproj", "{7A1F380E-6B84-418B-A8E8-9C35995FC9CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{43C23B96-465C-44E0-801E-3884C6EAF7EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43C23B96-465C-44E0-801E-3884C6EAF7EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43C23B96-465C-44E0-801E-3884C6EAF7EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43C23B96-465C-44E0-801E-3884C6EAF7EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A1F380E-6B84-418B-A8E8-9C35995FC9CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A1F380E-6B84-418B-A8E8-9C35995FC9CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A1F380E-6B84-418B-A8E8-9C35995FC9CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A1F380E-6B84-418B-A8E8-9C35995FC9CD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
